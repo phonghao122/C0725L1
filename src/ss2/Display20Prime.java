@@ -8,11 +8,18 @@ public class Display20Prime {
         Scanner sc = new Scanner(System.in);
         int n = 0;
         do {
-            n = sc.nextInt();
-            if(n <= 0){
-                System.out.println("Nhập lại n: ");
+            try{
+                String a = sc.nextLine();
+                n = Integer.parseInt(a);
+                if(n <= 0){
+                    System.out.println("Nhập lại n: ");
+                    continue;
+                }
+                break;
+            }catch(Exception e){
+                System.out.println("Nhập lại n");
             }
-        }while (n <= 0);
+        }while (true);
         int count = 0;
         int num = 2;
         while (count < n){

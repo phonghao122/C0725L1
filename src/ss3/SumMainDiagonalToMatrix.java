@@ -3,35 +3,43 @@ import java.util.Scanner;
 
 public class SumMainDiagonalToMatrix {
     public static void main(String[] args) {
-        System.out.println("Nhập n: ");
         Scanner sc = new Scanner(System.in);
         int n = 0;
         do {
-            n = sc.nextInt();
-            if (n <= 0) {
-                System.out.println("Nhập lại: ");
+            System.out.println("Nhập n: ");
+            try {
+                n = sc.nextInt();
+                if(n <= 0){
+                    System.out.println("Nhập lại n: ");
+                    continue;
+                }
+                break;
+            }catch (Exception e){
+                System.out.println("Nhập lại n: ");
             }
-        } while (n <= 0);
-        System.out.println("Nhập m: ");
+        }while(true);
+
         int m = 0;
         do {
-            m = sc.nextInt();
-            if (m <= 0 || m != n) {
-                System.out.println("Nhập lại: ");
+            System.out.println("Nhập m: ");
+            try {
+                m = sc.nextInt();
+                if(m <= 0){
+                    System.out.println("Nhập lại m: ");
+                    continue;
+                }
+                break;
+            }catch (Exception e){
+                System.out.println("Nhập lại m: ");
             }
-        } while (m <= 0);
+        }while(true);
+
         int[][] matrix = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                System.out.println("Nhập phần tử thứ [" + i + "][" + j + "]: ");
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<m;j++){
+                System.out.println("Nhập phần tử thứ ["+i+"]["+j+"]: ");
                 matrix[i][j] = sc.nextInt();
             }
-        }
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                System.out.print(matrix[i][j] + "\t");
-            }
-            System.out.println();
         }
 
         int sum = 0;

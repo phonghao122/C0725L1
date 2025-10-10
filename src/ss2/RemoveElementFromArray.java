@@ -5,9 +5,18 @@ import java.util.Scanner;
 public class RemoveElementFromArray {
     public static void main(String[] args) {
         int[] n = {1,2,6,5,8,4};
-        System.out.println("Nhập phần tử cần xóa: ");
         Scanner sc = new Scanner(System.in);
-        int x = sc.nextInt();
+        int x = 0;
+        do {
+            try {
+                System.out.println("Nhập phần tử cần xóa: ");
+                String a = sc.nextLine();
+                x = Integer.parseInt(a);
+                break;
+            }catch (Exception e){
+                System.out.println("Nhập lại");
+            }
+        }while (true);
         int index_del = 0;
         boolean check = false;
         for (int i = 0; i < n.length; i++) {
