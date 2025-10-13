@@ -1,4 +1,6 @@
-package ss4;
+package ss4.entities;
+
+import ss4.commons.Speed;
 
 public class Fan {
     private Speed speed = Speed.SLOW;
@@ -51,7 +53,7 @@ public class Fan {
         if(this.on){
             System.out.println("speed: "+this.speed+"\ncolor: "+this.color+"\nradius: "+this.radius+ "\nFan is on");
         }else {
-            System.out.println("speed: "+this.speed+"\ncolor: "+this.color+"\nradius: "+this.radius+ "\nFan is off");
+            System.out.println("color: "+this.color+"\nradius: "+this.radius+ "\nFan is off");
         }
     }
 }

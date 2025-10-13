@@ -1,4 +1,4 @@
-package ss4;
+package ss4.entities;
 
 public class QuadraticEquation {
     private double a,b,c;
@@ -27,7 +27,7 @@ public class QuadraticEquation {
         this.c = c;
     }
 
-    public QuadraticEquation(int a, int b, int c) {
+    public QuadraticEquation(double a, double b, double c) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -46,7 +46,7 @@ public class QuadraticEquation {
     }
 
     public void getRoots(){
-        double delta = getDiscriminant();
+        double delta = this.getDiscriminant();
         if(delta > 0){
             System.out.println("Nghiệm 1: "+ getRoot1());
             System.out.println("Nghiệm 2: "+ getRoot2());

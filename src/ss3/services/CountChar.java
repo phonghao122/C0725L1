@@ -1,4 +1,4 @@
-package ss3;
+package ss3.services;
 
 import java.util.Arrays;
 

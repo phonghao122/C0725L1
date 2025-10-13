@@ -1,6 +1,4 @@
-package ss2;
-
-import java.util.Scanner;
+package ss2.servicers;
 
 public class MergeArray {
     public static void main(String args[]) {

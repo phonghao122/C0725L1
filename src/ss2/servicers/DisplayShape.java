@@ -1,6 +1,4 @@
-package ss2;
-
-import java.awt.*;
+package ss2.servicers;
 
 public class DisplayShape {
     public static void main(String[] args) {

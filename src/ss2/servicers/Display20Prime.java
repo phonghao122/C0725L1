@@ -1,4 +1,6 @@
-package ss2;
+package ss2.servicers;
+
+import ss2.commons.PrimeCommon;
 
 import java.util.Scanner;
 
@@ -23,7 +25,7 @@ public class Display20Prime {
         int count = 0;
         int num = 2;
         while (count < n){
-            if(checkPrime(num)){
+            if(PrimeCommon.checkPrime(num)){
                 count++;
                 System.out.print(num + "\t");
             }
@@ -31,15 +33,5 @@ public class Display20Prime {
         }
     }
 
-    public static boolean checkPrime(int n){
-        if(n <= 1)
-            return false;
-        else{
-            for (int i = 2;i<=Math.sqrt(n);i++){
-                if(n%i==0)
-                    return false;
-            }
-            return true;
-        }
-    }
+
 }

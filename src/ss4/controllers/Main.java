@@ -1,6 +1,7 @@
-import ss4.Fan;
-import ss4.QuadraticEquation;
-import ss4.Speed;
+package ss4.controllers;
+
+import ss4.entities.Fan;
+import ss4.commons.Speed;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.

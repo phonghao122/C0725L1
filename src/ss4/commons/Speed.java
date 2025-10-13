@@ -1,4 +1,4 @@
-package ss4;
+package ss4.commons;
 
 public enum Speed {
     SLOW,
