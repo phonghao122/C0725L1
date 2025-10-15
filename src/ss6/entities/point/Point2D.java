@@ -1,4 +1,4 @@
-package ss6.entities;
+package ss6.entities.point;
 
 import java.util.Arrays;
 

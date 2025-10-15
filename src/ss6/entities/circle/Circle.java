@@ -1,4 +1,4 @@
-package ss6.entities;
+package ss6.entities.circle;
 
 public class Circle {
     private double radius;

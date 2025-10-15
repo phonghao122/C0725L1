@@ -1,9 +1,7 @@
 package ss6.controller;
 
-import ss6.entities.Circle;
-import ss6.entities.Cylinder;
-import ss6.entities.Point2D;
-import ss6.entities.Point3D;
+import ss6.entities.point.Point2D;
+import ss6.entities.point.Point3D;
 
 public class Main {
     public static void main(String[] args) {

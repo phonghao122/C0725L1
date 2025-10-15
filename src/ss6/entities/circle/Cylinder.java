@@ -1,4 +1,4 @@
-package ss6.entities;
+package ss6.entities.circle;
 
 public class Cylinder extends Circle{
     private double height;
