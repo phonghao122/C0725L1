@@ -12,9 +12,6 @@ public class Circle {
         return color;
     }
 
-    public Circle(){
-    }
-
     public Circle(double radius) {
         this.radius = radius;
     }
