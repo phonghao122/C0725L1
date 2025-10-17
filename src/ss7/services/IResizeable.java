@@ -1,5 +1,5 @@
 package ss7.services;
 
 public interface IResizeable {
-    public void resize(double percent);
+    void resize(double percent);
 }

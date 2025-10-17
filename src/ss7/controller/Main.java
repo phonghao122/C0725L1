@@ -16,32 +16,32 @@ public class Main {
 
         for (Shape shape : shapes) {
             if (shape instanceof Circle) {
-                System.out.println((Circle) shape);
+                System.out.println(shape);
                 System.out.println(((Circle) shape).getArea());
                 System.out.println(((Circle) shape).getPerimeter());
                 ((Circle) shape).resize(new Random().nextDouble(100)+1);
-                System.out.println((Circle) shape);
+                System.out.println(shape);
                 System.out.println(((Circle) shape).getArea());
                 System.out.println(((Circle) shape).getPerimeter());
                 continue;
             }
             if (shape instanceof Rectangle) {
-                System.out.println((Rectangle) shape);
+                System.out.println(shape);
                 System.out.println(((Rectangle) shape).getArea());
                 System.out.println(((Rectangle) shape).getPerimeter());
                 ((Rectangle) shape).resize(new Random().nextDouble(100)+1);
-                System.out.println((Rectangle) shape);
+                System.out.println(shape);
                 System.out.println(((Rectangle) shape).getArea());
                 System.out.println(((Rectangle) shape).getPerimeter());
                 continue;
             }
             if (shape instanceof Square) {
-                System.out.println((Square) shape);
+                System.out.println(shape);
                 System.out.println(((Square) shape).getArea());
                 System.out.println(((Square) shape).getPerimeter());
                 ((Square) shape).howToColor();
                 ((Square) shape).resize(new Random().nextDouble(100)+1);
-                System.out.println((Square) shape);
+                System.out.println(shape);
                 System.out.println(((Square) shape).getArea());
                 System.out.println(((Square) shape).getPerimeter());
                 ((Square) shape).howToColor();
