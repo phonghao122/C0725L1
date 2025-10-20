@@ -1,7 +1,7 @@
-package ss7.entities;
+package ss7.entity;
 
-import ss7.services.IColorable;
-import ss7.services.IResizeable;
+import ss7.service.IColorable;
+import ss7.service.IResizeable;
 
 public class Square extends Shape implements IColorable, IResizeable {
     private double width = 1.0;

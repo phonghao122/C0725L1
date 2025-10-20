@@ -1,9 +1,9 @@
 package ss7.controller;
 
-import ss7.entities.Circle;
-import ss7.entities.Rectangle;
-import ss7.entities.Shape;
-import ss7.entities.Square;
+import ss7.entity.Circle;
+import ss7.entity.Rectangle;
+import ss7.entity.Shape;
+import ss7.entity.Square;
 
 import java.util.Random;
 

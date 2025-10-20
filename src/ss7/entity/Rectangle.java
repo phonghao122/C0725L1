@@ -1,6 +1,6 @@
-package ss7.entities;
+package ss7.entity;
 
-import ss7.services.IResizeable;
+import ss7.service.IResizeable;
 
 public class Rectangle extends Shape implements IResizeable {
     private double width = 1.0;

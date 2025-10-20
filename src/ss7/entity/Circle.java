@@ -1,6 +1,6 @@
-package ss7.entities;
+package ss7.entity;
 
-import ss7.services.IResizeable;
+import ss7.service.IResizeable;
 
 public class Circle extends Shape implements IResizeable {
     private double radius = 1.0;

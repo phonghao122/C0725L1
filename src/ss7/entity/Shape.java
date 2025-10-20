@@ -1,4 +1,4 @@
-package ss7.entities;
+package ss7.entity;
 
 public class Shape {
     private String color = "green";
