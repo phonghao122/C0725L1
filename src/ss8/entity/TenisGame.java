@@ -1,60 +1,59 @@
 package ss8.entity;
 
 public class TenisGame {
-    public static String getScore(String player1Name, String player2Name, int scorePlayer1, int scorePlayer2) {
-        String score = "";
+    public static String getResultTennis(int scorePlayer1, int scorePlayer2) {
+        String result = "";
         int tempScore=0;
         if (scorePlayer1==scorePlayer2)
         {
-            score = findScore(scorePlayer1);
+            result = getScore(scorePlayer1);
         }
         else if (scorePlayer1>=4 || scorePlayer2>=4)
         {
-            int minusResult = scorePlayer1-scorePlayer2;
-            score = findAdvantage(minusResult);
+            result = getAdvantage(scorePlayer1-scorePlayer2);
         }
         else
         {
             for (int i=1; i<3; i++)
             {
                 if (i==1) tempScore = scorePlayer1;
-                else { score+="-"; tempScore = scorePlayer2;}
-                score += findScore(tempScore);
+                else { result+="-"; tempScore = scorePlayer2;}
+                result += getScore(tempScore);
             }
         }
-        return score;
+        return result;
     }
 
-    private static String findScore(int scorePlayer){
-        String score="";
-        switch (scorePlayer)
+    private static String getAdvantage(int minusResult) {
+        String result;
+        if (minusResult ==1) result ="Advantage player1";
+        else if (minusResult ==-1) result ="Advantage player2";
+        else if (minusResult >=2) result = "Win for player1";
+        else result ="Win for player2";
+        return result;
+    }
+
+    private static String getScore(int score) {
+        String result = "";
+        switch (score)
         {
             case 0:
-                score = "Love-All";
+                result = "Love-All";
                 break;
             case 1:
-                score = "Fifteen-All";
+                result = "Fifteen-All";
                 break;
             case 2:
-                score = "Thirty-All";
+                result = "Thirty-All";
                 break;
             case 3:
-                score = "Forty-All";
+                result = "Forty-All";
                 break;
             default:
-                score = "Deuce";
+                result = "Deuce";
                 break;
 
         }
-        return score;
-    }
-
-    private static String findAdvantage(int minusResult){
-        String score="";
-        if (minusResult==1) score ="Advantage player1";
-        else if (minusResult ==-1) score ="Advantage player2";
-        else if (minusResult>=2) score = "Win for player1";
-        else score ="Win for player2";
-        return score;
+        return result;
     }
 }
