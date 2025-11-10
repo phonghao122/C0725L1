@@ -1,5 +1,6 @@
-package ss12.common;
+package ss12.view;
 
+import ss12.common.CheckInput;
 import ss12.entity.Product;
 
 import java.util.Scanner;

@@ -1,8 +1,6 @@
 package ss12.view;
 
 import ss12.common.CheckInput;
-import ss12.common.DisplayProduct;
-import ss12.common.ProductInput;
 import ss12.controller.ProductController;
 import ss12.entity.Product;
 

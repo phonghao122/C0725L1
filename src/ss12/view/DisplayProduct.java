@@ -1,4 +1,4 @@
-package ss12.common;
+package ss12.view;
 
 import ss12.entity.Product;
 
