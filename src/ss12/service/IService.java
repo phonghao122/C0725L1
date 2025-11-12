@@ -9,5 +9,4 @@ public interface IService <T>{
     T findById(int id);
     List<T> findAll();
     boolean existsId(int id);
-    List<T> searchProduct(String search);
 }

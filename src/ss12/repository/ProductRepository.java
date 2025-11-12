@@ -64,4 +64,14 @@ public class ProductRepository {
         }
         return result;
     }
+
+    public List<Product> findAllByPrice(double minPrice, double maxPrice) {
+        List<Product> result = new ArrayList<>();
+        for(Product p : products) {
+            if(p.getPrice() >= minPrice && p.getPrice() <= maxPrice) {
+                result.add(p);
+            }
+        }
+        return result;
+    }
 }

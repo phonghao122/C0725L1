@@ -29,4 +29,7 @@ public class ProductController {
     public List<Product> searchProduct(String search) {
         return productService.searchProduct(search);
     }
+    public List<Product> findAllByPrice(double minPrice, double maxPrice) {
+        return productService.findAllByPrice(minPrice, maxPrice);
+    }
 }

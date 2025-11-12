@@ -82,4 +82,9 @@ public class ProductService implements IProductService{
         }
         return productList;
     }
+
+    @Override
+    public List<Product> findAllByPrice(double minPrice, double maxPrice) {
+        return productRepository.findAllByPrice(minPrice, maxPrice);
+    }
 }

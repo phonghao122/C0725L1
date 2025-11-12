@@ -1,6 +1,7 @@
 package ss12.entity;
 
 public class Product {
+    private static int nextId = 0;
     private int id;
     private String name;
     private double price;
@@ -15,10 +16,12 @@ public class Product {
         this.category = category;
     }
 
-    public Product() {}
+    public Product() {
+        this.id = nextId++;
+    }
 
-    public Product(int id, String name, double price, int quantity, String category) {
-        this.id = id;
+    public Product(String name, double price, int quantity, String category) {
+        this.id = nextId++;
         this.name = name;
         this.price = price;
         this.quantity = quantity;

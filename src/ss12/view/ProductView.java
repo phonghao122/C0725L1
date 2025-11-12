@@ -22,6 +22,7 @@ public class ProductView {
             System.out.println("3. Tìm kiếm sản phẩm");
             System.out.println("4. Cập nhật sản phẩm");
             System.out.println("5. Xóa sản phẩm");
+            System.out.println("6. Tìm kiếm sản phẩm theo giá...");
             System.out.println("0. Quay lại menu chính");
             System.out.print("👉 Chọn: ");
 
@@ -73,17 +74,43 @@ public class ProductView {
                     break;
                 case 5:
                     System.out.println("➡️ Xóa sản phẩm...");
-                    while (true){
-                        System.out.println("Nhập id: ");
-                        String id = sc.nextLine();
-                        if (CheckInput.checkInteger(id)) {
-                            if (productController.delete(Integer.parseInt(id))) {
-                                System.out.println("Xóa sản phẩm thành công");
-                            }else {
-                                System.out.println("Xóa sản phẩm thất bại");
+                    do {
+                        try {
+                            System.out.println("Nhập id: ");
+                            String id = sc.nextLine();
+                            if (CheckInput.checkId(id)) {
+                                if (productController.delete(Integer.parseInt(id))) {
+                                    System.out.println("Xóa sản phẩm thành công");
+                                } else {
+                                    System.out.println("Xóa sản phẩm thất bại");
+                                }
                             }
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
                         }
                         break;
+                    } while (true);
+                    break;
+                case 6:
+                    System.out.println("➡️ Tìm kiếm sản phẩm theo giá...");
+                    while (true){
+                        try {
+                            double minPrice = 0, maxPrice = 0;
+                            System.out.println("Nhập giá tối thiểu: ");
+                            String min = sc.nextLine();
+                            if (CheckInput.checkPrice(min)) {
+                                minPrice = Double.parseDouble(min);
+                            }
+                            System.out.println("Nhập giá tối đa: ");
+                            String max = sc.nextLine();
+                            if (CheckInput.checkPrice(min)) {
+                                maxPrice = Double.parseDouble(max);
+                            }
+                            productController.findAllByPrice(minPrice,maxPrice);
+                            break;
+                        }catch (Exception e){
+                            System.out.println(e.getMessage());
+                        }
                     }
                     break;
                 case 0:
