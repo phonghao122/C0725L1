@@ -16,7 +16,7 @@ public class CopyFileText {
             }
 
         } catch (IOException e) {
-            System.out.println("Không thể đọc file: " + filePath);
+            System.out.println("Error reading file: " + filePath);
         }
         return result.toString();
     }
@@ -28,7 +28,7 @@ public class CopyFileText {
             bw.flush();
             System.out.println("Ghi file thành công");
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error writing file: " + filePath);
         }
     }
 
