@@ -12,7 +12,7 @@ public class ATMService implements IATMService{
     private final TransactionRepository transactionRepository;
     private boolean isLogin;
     private BankAccount currentBankAccount;
-    public ATMService() {
+    public ATMService() throws Exception {
         bankAccountRespository = new BankAccountRespository();
         transactionRepository = new TransactionRepository();
         isLogin = false;
@@ -33,20 +33,22 @@ public class ATMService implements IATMService{
     }
 
     @Override
-    public boolean withdraw(double amount) {
+    public boolean withdraw(double amount) throws Exception {
         if (isLogin) {
             if (currentBankAccount.getBalance() >= amount) {
                 currentBankAccount.setBalance(currentBankAccount.getBalance() - amount);
                 bankAccountRespository.updateBankAccount(currentBankAccount);
                 transactionRepository.addTransaction(new Transaction(currentBankAccount.getAccountNumber(), "WITHDRAW", amount));
                 return true;
+            }else {
+                throw new Exception("Số dư không đủ");
             }
         }
         return false;
     }
 
     @Override
-    public boolean deposit(double amount) {
+    public boolean deposit(double amount) throws Exception {
         if (isLogin) {
             currentBankAccount.setBalance(currentBankAccount.getBalance() + amount);
             bankAccountRespository.updateBankAccount(currentBankAccount);

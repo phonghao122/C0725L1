@@ -38,7 +38,7 @@ public class BankAccount {
         this.balance = balance;
     }
 
-    public BankAccount(String accountNumber, String pin, String ownerName) {
+    public BankAccount(String accountNumber, String pin, String ownerName, double balance) {
         this.accountNumber = accountNumber;
         this.pin = pin;
         this.ownerName = ownerName;

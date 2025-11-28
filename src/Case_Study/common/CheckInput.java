@@ -1,6 +1,8 @@
 package Case_Study.common;
 
 
+import Case_Study.service.BankAccountService;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -70,61 +72,37 @@ public class CheckInput {
         }
     }
 
-    public static boolean checkPrice(String price) throws Exception {
-        try {
-            if (price != null) {
-                if (checkDouble(price)) {
-                    double priceDouble = Double.parseDouble(price);
-                    if (priceDouble >= 0 &&  priceDouble <= 50000000) {
-                        return true;
-                    }else {
-                        throw new Exception("Nhập lại giá");
-                    }
-                }else {
-                    throw new Exception("Nhập lại giá");
-                }
-            }else {
-                throw new Exception("Nhập lại giá");
-            }
-        }catch (Exception e){
-            throw new Exception("Nhập lại giá");
+    public static boolean checkAccountNumber(String accountNumber) throws Exception {
+        if(accountNumber == null){
+            throw new Exception("Nhập lại số tài khoản");
         }
+        if (!accountNumber.matches("^(03|05|07|08|09)\\d{8}$")) {
+            throw new Exception("Nhập lại số tài khoản");
+        }
+        return true;
     }
 
-    public static boolean checkQuantity(String quantity) throws Exception {
-        try {
-            if (quantity != null) {
-                if (checkInteger(quantity)) {
-                    int quantityInt = Integer.parseInt(quantity);
-                    if (quantityInt >= 0 && quantityInt <= 100) {
-                        return true;
-                    }else {
-                        throw new Exception("Nhập lại số lượng");
-                    }
-                }else {
-                    throw new Exception("Nhập lại số lượng");
-                }
-            }else {
-                throw new Exception("Nhập lại số lượng");
-            }
-        }catch (Exception e){
-            throw new Exception("Nhập lại số lượng");
+    public static boolean checkPIN(String pin) throws Exception {
+        if (pin == null) {
+            throw new Exception("Nhập lại PIN: ");
         }
+        if(!pin.matches("^\\d{6}$")){
+            throw new Exception("Nhập lại PIN: ");
+        }
+        return true;
     }
-    public static boolean checkId(String id) throws Exception {
-        try {
-            if (checkInteger(id)) {
-                int idInt = Integer.parseInt(id);
-                if (idInt >= 0) {
-                    return true;
-                }else {
-                    throw new Exception("Nhập lại id: ");
-                }
-            }else {
-                throw new Exception("Nhập lại id: ");
+
+    public static boolean checkAmount(String amount) throws Exception {
+        if(checkDouble(amount)){
+            double dobleAmount = Double.parseDouble(amount);
+            if (dobleAmount < 50000 || dobleAmount > 10000000) {
+                throw new Exception("Nhập lại số tiền: ");
             }
-        } catch (Exception e) {
-            throw new Exception("Nhập lại id: ");
+            if (dobleAmount%50000 != 0){
+                throw new Exception("Số tiền phải là bội số của 50.000 VND");
+            }
+            return true;
         }
+        return false;
     }
 }
