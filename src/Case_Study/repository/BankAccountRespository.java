@@ -86,7 +86,6 @@ public class BankAccountRespository {
 
 
     public void addBankAccount(BankAccount bankAccount) throws Exception {
-        // kiểm tra trùng accountNumber
         if (getBankAccount(bankAccount.getAccountNumber()) != null) {
             return;
         }

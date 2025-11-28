@@ -42,7 +42,7 @@ public class BankAccount {
         this.accountNumber = accountNumber;
         this.pin = pin;
         this.ownerName = ownerName;
-        this.balance = 0;
+        this.balance = balance;
     }
 
     public BankAccount() {

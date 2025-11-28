@@ -103,7 +103,7 @@ public class MainView {
                             break;
                         case 0:
                             System.out.println("👋 Tạm biệt!");
-                            break;
+                            System.exit(0);
                         default:
                             System.out.println("⚠️ Lựa chọn không hợp lệ. Vui lòng thử lại!");
                             break;
@@ -150,7 +150,7 @@ public class MainView {
                             }while (true);
                             break;
                         case 3:
-                            System.out.print("👉 Số dư tài khoản: "+atmController.getBalance());
+                            System.out.print("👉 Số dư tài khoản: "+atmController.getBalance()+" VND");
                             break;
                         case 4:
                             System.out.println("👉 Lịch sử giao dịch: ");
@@ -183,7 +183,7 @@ public class MainView {
     public  static void showTransaction(Transaction transaction){
         System.out.println("Số tài khoản: "+transaction.getAccountNumber()
                             +"\nType: "+transaction.getType()
-                            +"\nAmount: "+transaction.getAmount()
+                            +"\nAmount: "+transaction.getAmount()+" VND"
                             +"\nNgày giao dịch: "+transaction.getDateTime());
     }
 }
