@@ -12,7 +12,9 @@ foreign key (supplier_id) references suppliers(id)
 );
 create table orders(
 id int primary key auto_increment,
-order_date date
+order_date date,
+supplier_id int,
+foreign key (supplier_id) references suppliers(id)
 );
 create table materials(
 id int primary key auto_increment,
