@@ -1,6 +1,6 @@
-create database quan_ly_sinh_vien;
-use quan_ly_sinh_vien;
-create table james(
+create database if not exists m3_c0725l1;
+use m3_c0725l1;
+ create table james(
  username varchar(50) primary key,
  `password` varchar(50)
  );
@@ -82,11 +82,53 @@ insert into instructors(`name`,birthday, salary)
  
  insert into instructor_class(class_id,instructor_id) values (1,1),(1,2),(2,1),(2,2),(3,1),(3,2);
 
-select * from students s where s.`name` like 'h%';
-update students
-set class_id = 2
-where name like '%hung';
+select * from phones;
+select* from classes;
+select* from students;
+select* from james;
+select* from instructors;
+select * from instructor_class;
 
-select * from students
-order by score desc, name asc;
+SELECT s.*, c.name AS class_name
+FROM students s
+INNER JOIN classes c ON s.class_id = c.id;
 
+SELECT s.*, c.name AS class_name
+FROM students s
+LEFT JOIN classes c ON s.class_id = c.id;
+
+SELECT *
+FROM students
+WHERE name LIKE '%Hai%' OR name LIKE '%Huynh%';
+
+SELECT *
+FROM students
+WHERE score > 5;
+
+SELECT *
+FROM students
+WHERE name LIKE 'nguyen%';
+
+SELECT score, COUNT(*) AS student_count
+FROM students
+GROUP BY score
+ORDER BY score;
+
+SELECT score, COUNT(*) AS student_count
+FROM students
+WHERE score > 5
+GROUP BY score
+ORDER BY score;
+
+SELECT score, COUNT(*) AS student_count
+FROM students
+WHERE score > 5
+GROUP BY score
+HAVING COUNT(*) >= 2
+ORDER BY score;
+
+SELECT s.*
+FROM students s
+INNER JOIN classes c ON s.class_id = c.id
+WHERE c.name = 'c1121g1'
+ORDER BY s.name ASC;
