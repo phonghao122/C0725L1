@@ -6,7 +6,7 @@ use fean_food;
 create table users(
     username varchar(50) primary key,
     `password` varchar(255) not null,
-    `role` enum('customer', 'admin') not null default 'customer',
+    `role` enum('USER', 'ADMIN') not null default 'USER',
     is_active bit default 1,
     created_at timestamp default current_timestamp
 );
@@ -54,14 +54,6 @@ create table sales(
     check (end_date >= start_date)
 );
 
-create table sales_products(
-    sale_id int,
-    product_id int,
-    quantity int,
-    primary key (sale_id, product_id),
-    foreign key (sale_id) references sales(id) on delete cascade,
-    foreign key (product_id) references products(id)
-);
 
 -- ========== THANH TOÁN & GIAO HÀNG ==========
 create table payment_methods(
@@ -73,6 +65,7 @@ create table payment_methods(
 create table delivery_informations(
     id int primary key auto_increment,
     customer_id int not null,
+    `name` varchar(100),
     phone varchar(20) not null,
     address text not null,
     is_default bit default 0,
@@ -84,15 +77,16 @@ create table orders(
     id int primary key auto_increment,
     order_date datetime default current_timestamp,
     customer_id int not null,
-    delivery_information_id int not null,
+    address_id int not null,
     payment_method_id int not null,
-    order_status enum('pending', 'confirmed', 'preparing', 'ready', 'completed', 'cancelled') default 'pending',
+    sales_id int not null,
+    order_status enum('PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'COMPLETED', 'CANCELLED') default 'PENDING',
     total_amount decimal(10,2) not null,
     note text,
-    
     foreign key (customer_id) references customers(customer_id),
-    foreign key (delivery_information_id) references delivery_informations(id),
-    foreign key (payment_method_id) references payment_methods(id)
+    foreign key (payment_method_id) references payment_methods(id),
+    foreign key (address_id) references delivery_informations(id),
+    foreign key (sales_id) references sales(id)
 );
 
 -- ========== CHI TIẾT ĐƠN HÀNG ==========
@@ -108,60 +102,170 @@ create table order_details(
     foreign key (product_id) references products(id)
 );
 
--- Insert Users
-insert into users (username, `password`, role) values 
-('customer1', '$2a$10$hash1',  'customer'),
-('customer2', '$2a$10$hash2',  'customer'),
-('admin', '$2a$10$hashadmin', 'admin');
+-- ========== CHI TIẾT GIỎ HÀNG ==========
+create table cart_items (
+    id int primary key auto_increment,
+    customer_id int not null,
+    product_id int not null,
+    quantity int not null default 1 check (quantity > 0),
+    added_at timestamp default current_timestamp,
+    foreign key (customer_id) references customers(customer_id) on delete cascade,
+    foreign key (product_id) references products(id) on delete cascade,
+    unique key uq_cart (customer_id, product_id)
+);
 
--- Insert Customers
-insert into customers ( name, gender, dob,email, phone, username) values 
-('Nguyễn Văn A', 'male', '1995-05-15','customer1@email.com', '0901234567', 'customer1'),
-('Trần Thị B', 'female', '1998-08-20', 'customer2@email.com', '0907654321', 'customer2'),
-('Trần Thị C', 'male', '1998-08-20', 'admin@email.com', '0907654311', 'admin');
+insert into users(username, `password`, `role`)
+values
+('admin', 'admin123', 'ADMIN'),
+('khach01', '123456', 'USER'),
+('khach02', '123456', 'USER');
 
--- Insert Categories
-insert into categories (name) values 
-('Burger'),
+insert into customers(name, gender, dob, email, phone, username)
+values
+('Nguyễn Văn A', 'male', '2000-05-12', 'a@gmail.com', '0901111111', 'khach01'),
+('Trần Thị B', 'female', '2001-08-20', 'b@gmail.com', '0902222222', 'khach02');
+
+
+insert into categories(name)
+values
 ('Gà rán'),
-('Khoai tây chiên'),
-('Đồ uống');
+('Hamburger'),
+('Khoai tây & Ăn kèm'),
+('Nước uống');
 
--- Insert Products
-insert into products (name, price, description, img, is_available, category_id) values 
-('Burger Bò Phô Mai', 45000, 'Burger bò nướng + phô mai cheddar', 'burger_beef.jpg', 1, 1),
-('Burger Gà Giòn', 40000, 'Burger gà giòn + rau xà lách', 'burger_chicken.jpg', 1, 1),
-('Gà Rán 2 Miếng', 70000, 'Gà giòn truyền thống - 2 miếng', 'fried_chicken.jpg', 1, 2),
-('Khoai Tây Chiên (M)', 25000, 'Khoai tây chiên giòn', 'fries.jpg', 1, 3),
-('Pepsi (M)', 15000, 'Nước ngọt Pepsi', 'pepsi.jpg', 1, 4),
-('Coca Cola (M)', 15000, 'Nước ngọt Coca', 'coca.jpg', 1, 4);
+insert into products(name, price, description, img, category_id)
+values
+-- Gà rán
+('Gà rán giòn cay', 35000, 'Gà rán cay giòn', 'ga_gion_cay.jpg', 1),
+('Gà rán truyền thống', 33000, 'Gà rán vị truyền thống', 'ga_truyen_thong.jpg', 1),
 
--- Insert Payment Methods
-insert into payment_methods (name, is_active) values 
-('Tiền mặt (COD)', 1),
-('Chuyển khoản ngân hàng', 1),
-('Ví MoMo', 1);
+-- Hamburger
+('Hamburger bò', 45000, 'Burger bò phô mai', 'burger_bo.jpg', 2),
+('Hamburger gà', 42000, 'Burger gà giòn', 'burger_ga.jpg', 2),
 
--- Insert Delivery Informations
-insert into delivery_informations (customer_id, phone, address, is_default) values 
-(1, '0901234567', '123 Lê Lợi, Quận 1, TP.HCM', 1),
-(2, '0907654321', '789 Trần Hưng Đạo, Quận 5, TP.HCM', 1);
+-- Ăn kèm
+('Khoai tây chiên', 25000, 'Khoai tây chiên giòn', 'khoai_tay.jpg', 3),
 
--- Insert Sales
-insert into sales (name, discount_type, discount_value, start_date, end_date, is_active) values 
-('Flash Sale Burger', 'PERCENT', 30, '2025-01-20', '2025-01-31', 1),
-('Giảm Giá Đồ Uống', 'AMOUNT', 5000, '2025-01-15', '2025-02-15', 1);
+-- Nước uống
+('Coca Cola', 15000, 'Nước ngọt Coca', 'coca.jpg', 4),
+('Pepsi', 15000, 'Nước ngọt Pepsi', 'pepsi.jpg', 4);
 
--- Insert Sales Products
-insert into sales_products (sale_id, product_id, quantity) values 
-(1, 1,20), (1, 2,10),
-(2, 5,50), (2, 6, 30);
+insert into sales(name, discount_type, discount_value, start_date, end_date)
+values
+('Giảm 10%', 'PERCENT', 10, '2026-01-01', '2026-12-31'),
+('Giảm 20.000đ', 'AMOUNT', 20000, '2026-01-01', '2026-06-30');
 
--- Insert Sample Order
-insert into orders (customer_id, delivery_information_id, payment_method_id, order_status, total_amount, note) values 
-(1, 1, 1, 'completed', 135000, 'Giao nhanh giúp em');
+insert into payment_methods(name)
+values
+('Tiền mặt'),
+('Chuyển khoản'),
+('Ví điện tử');
 
--- Insert Order Details
-insert into order_details (order_id, product_id, quantity, unit_price, subtotal) values 
-(1, 1, 2, 45000, 90000),  -- 2 Burger Bò
-(1, 5, 3, 15000, 45000);  -- 3 Pepsi
+insert into delivery_informations(customer_id, `name`, phone, address, is_default)
+values
+(1, 'Nguyễn Văn A', '0901111111', '123 Lê Lợi, Quận 1, TP.HCM', 1),
+(2, 'Trần Thị B', '0902222222', '456 Nguyễn Trãi, Quận 5, TP.HCM', 1);
+
+insert into orders(customer_id, address_id, payment_method_id, sales_id, total_amount)
+values
+(1, 1, 1, 1, 113000),
+(2, 2, 2, 2, 83000);
+
+
+-- Đơn hàng 1
+insert into order_details(order_id, product_id, quantity, unit_price, subtotal)
+values
+(1, 1, 2, 35000, 70000),
+(1, 5, 1, 25000, 25000),
+(1, 6, 1, 15000, 15000);
+
+-- Đơn hàng 2
+insert into order_details(order_id, product_id, quantity, unit_price, subtotal)
+values
+(2, 3, 1, 45000, 45000),
+(2, 7, 1, 15000, 15000),
+(2, 5, 1, 25000, 25000);
+
+select * from users where username = 'admin';
+
+select * from users where username = 'khach01';
+
+DELIMITER $$
+
+-- ========== 1. Tìm kiếm sản phẩm theo CATEGORY ==========
+CREATE PROCEDURE sp_search_products_by_category(
+    IN p_category_id INT
+)
+BEGIN
+    SELECT 
+        p.id,
+        p.name,
+        p.price,
+        p.description,
+        p.img,
+        p.is_available,
+        p.category_id,
+        c.name AS category_name,
+        p.created_at
+    FROM products p
+    INNER JOIN categories c ON p.category_id = c.id
+    WHERE p.category_id = p_category_id
+        AND p.is_available = 1
+    ORDER BY p.created_at DESC;
+END$$
+
+-- ========== 2. Tìm kiếm sản phẩm theo TÊN ==========
+CREATE PROCEDURE sp_search_products_by_name(
+    IN p_product_name VARCHAR(100)
+)
+BEGIN
+    SELECT 
+        p.id,
+        p.name,
+        p.price,
+        p.description,
+        p.img,
+        p.is_available,
+        p.category_id,
+        c.name AS category_name,
+        p.created_at
+    FROM products p
+    INNER JOIN categories c ON p.category_id = c.id
+    WHERE p.name LIKE CONCAT('%', p_product_name, '%')
+        AND p.is_available = 1
+    ORDER BY p.created_at DESC;
+END$$
+
+DELIMITER ;
+
+-- ===== Tìm theo CATEGORY =====
+-- Tìm tất cả sản phẩm Gà rán (category_id = 1)
+CALL sp_search_products_by_category(1);
+
+-- Tìm tất cả sản phẩm Hamburger (category_id = 2)
+CALL sp_search_products_by_category(2);
+
+-- Tìm tất cả sản phẩm Khoai tây & Ăn kèm (category_id = 3)
+CALL sp_search_products_by_category(3);
+
+-- Tìm tất cả Nước uống (category_id = 4)
+CALL sp_search_products_by_category(4);
+
+
+-- ===== Tìm theo TÊN =====
+-- Tìm sản phẩm có chữ "gà"
+CALL sp_search_products_by_name('gà');
+
+-- Tìm sản phẩm có chữ "burger"
+CALL sp_search_products_by_name('burger');
+
+-- Tìm sản phẩm có chữ "khoai"
+CALL sp_search_products_by_name('khoai');
+
+-- Tìm sản phẩm có chữ "coca"
+CALL sp_search_products_by_name('coca');
+
+-- Tìm sản phẩm có chữ "rán"
+CALL sp_search_products_by_name('rán');
+
+select * from products
