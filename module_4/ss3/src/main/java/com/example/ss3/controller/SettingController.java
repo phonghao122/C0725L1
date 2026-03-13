@@ -40,6 +40,7 @@ public class SettingController {
     public String save(@ModelAttribute("settings") Setting settings,
                        RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("settings", settings);
+        redirectAttributes.addFlashAttribute("message", "Update successful");
         return "redirect:/settings";
     }
 }

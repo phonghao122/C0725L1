@@ -22,6 +22,13 @@
             border-radius:6px;
             box-shadow:0 2px 8px rgba(0,0,0,0.1);
         }
+
+        .toast-container{
+            position:fixed;
+            top:20px;
+            right:20px;
+            z-index:9999;
+        }
     </style>
 </head>
 
@@ -100,6 +107,37 @@
     </form:form>
 
 </div>
+
+<!-- Toast -->
+<c:if test="${not empty settings}">
+    <div class="toast-container">
+
+        <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert">
+
+            <div class="d-flex">
+                <div class="toast-body">
+                    Update successful!
+                </div>
+
+                <button type="button"
+                        class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast"></button>
+            </div>
+
+        </div>
+
+    </div>
+</c:if>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const toastElement = document.getElementById('successToast');
+    if (toastElement) {
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+    }
+</script>
 
 </body>
 </html>
