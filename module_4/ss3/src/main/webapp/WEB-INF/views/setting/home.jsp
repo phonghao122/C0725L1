@@ -31,9 +31,7 @@
 
     <h2 class="mb-4">Settings</h2>
 
-    <form:form action="${pageContext.request.contextPath}/settings"
-               method="post"
-               modelAttribute="settings">
+    <form:form action="/settings" method="post" modelAttribute="settings">
 
         <!-- Language -->
         <div class="mb-3 row">
