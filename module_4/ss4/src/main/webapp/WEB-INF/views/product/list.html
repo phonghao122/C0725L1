@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Product List</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body{
+            background:#f5f6fa;
+        }
+
+        .container-box{
+            width:900px;
+            margin:50px auto;
+            background:white;
+            padding:30px;
+            border-radius:8px;
+            box-shadow:0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .toast-container{
+            position:fixed;
+            top:20px;
+            right:20px;
+            z-index:9999;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container-box">
+
+    <h2 class="text-center mb-4">Product Management</h2>
+
+    <a href="/product/add" class="btn btn-success mb-3">Add Product</a>
+    <div class="mb-3">
+        <input type="text"
+               id="searchInput"
+               class="form-control"
+               placeholder="Search product name..."
+               onkeyup="searchProduct()">
+    </div>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+            <td th:text="${product.quantity}"></td>
+            <td th:text="${product.description}"></td>
+            <td>
+                <a th:href="@{/product/detail/__${product.id}__}" class="btn btn-warning btn-sm">Detail</a>
+                <a th:href="@{/product/edit/__${product.id}__}" class="btn btn-primary btn-sm">Edit</a>
+                <a th:href="@{/product/delete/__${product.id}__}"
+                   class="btn btn-danger btn-sm"
+                   data-bs-toggle="modal"
+                   data-bs-target="#deleteModal"
+                   th:attr="data-id=${product.id}">Delete
+                </a>
+            </td>
+        </tr>
+
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- Toast -->
+<div class="toast-container" th:if="${message}">
+
+    <div id="toastMessage" class="toast align-items-center text-bg-success border-0">
+
+        <div class="d-flex">
+            <div class="toast-body" th:text="${message}">
+                Success message
+            </div>
+
+            <button type="button"
+                    class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast"></button>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you want to delete this product?
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <a id="confirmDeleteBtn" class="btn btn-danger">
+                    Delete
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const toastEl = document.getElementById('toastMessage');
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    }
+    function searchProduct() {
+
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach(function(row){
+
+            let name = row.children[1].textContent.toLowerCase();
+
+            if(name.includes(input)){
+                row.style.display = "";
+            }else{
+                row.style.display = "none";
+            }
+
+        });
+
+    }
+
+    const deleteModal = document.getElementById('deleteModal');
+
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+
+        const deleteBtn = document.getElementById('confirmDeleteBtn');
+
+        deleteBtn.href = "/product/delete/" + id;
+
+    });
+</script>
+
+</body>
+</html>
