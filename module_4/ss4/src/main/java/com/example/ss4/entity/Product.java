@@ -1,10 +1,16 @@
 package com.example.ss4.entity;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private double price;
     private int quantity;
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     public int getId() {
@@ -49,11 +55,5 @@ public class Product {
 
     public Product() {
     }
-    public Product(int id, String name, double price, int quantity, String description) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.description = description;
-    }
+
 }

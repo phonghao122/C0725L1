@@ -79,7 +79,7 @@ create table orders(
     customer_id int not null,
     address_id int not null,
     payment_method_id int not null,
-    sales_id int not null,
+    sales_id int,
     order_status enum('PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'COMPLETED', 'CANCELLED') default 'PENDING',
     total_amount decimal(10,2) not null,
     note text,
@@ -268,4 +268,6 @@ CALL sp_search_products_by_name('coca');
 -- Tìm sản phẩm có chữ "rán"
 CALL sp_search_products_by_name('rán');
 
-select * from products
+select * from products;
+
+SELECT * FROM order_details WHERE order_id = 1

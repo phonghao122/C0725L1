@@ -29,7 +29,7 @@
 
     <form action="/product/edit" method="post" th:object="${product}">
 
-        <div class="mb-3">
+        <div hidden="hidden" class="mb-3">
             <label class="form-label">ID</label>
             <input type="number" class="form-control" th:field="*{id}" th:value="${product.id}" readonly>
         </div>
