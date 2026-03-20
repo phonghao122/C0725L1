@@ -1,92 +1,49 @@
 package com.example.ss4.repository;
 
 import com.example.ss4.entity.Product;
-import com.example.ss4.util.ConnectionUtil;
-import org.hibernate.Session;
-import jakarta.persistence.TypedQuery;
-import org.hibernate.Transaction;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Repository
 public class ProductRepository implements IProductRepository{
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
-    public boolean save(Product product) {
-        Session session = ConnectionUtil.sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(product);
-        session.getTransaction().commit();
-        session.close();
-        return true;
+    @Transactional
+    public void save(Product product) {
+        entityManager.persist(product);
     }
 
     @Override
     public List<Product> findAll() {
-        Session session = ConnectionUtil.sessionFactory.openSession();
-        TypedQuery<Product> query = session.createQuery("from Product");
-        List<Product> products = query.getResultList();
-        session.close();
-        return products;
+        return entityManager.createQuery("FROM Product", Product.class).getResultList();
     }
 
     @Override
     public Product findById(int id) {
-            Session session = ConnectionUtil.sessionFactory.openSession();
-            Product product = session.find(Product.class, id);
-            session.close();
-            if (product != null) {
-                return product;
-            }
-        return null;
+        return entityManager.find(Product.class, id);
     }
 
     @Override
-    public boolean delete(int id) {
-        Session session = ConnectionUtil.sessionFactory.openSession();
-        Product product = session.find(Product.class, id);
-        if (product != null) {
-            session.beginTransaction();
-            session.remove(product);
-            session.getTransaction().commit();
-            session.close();
-            return true;
-        }
-        session.close();
-        return false;
+    @Transactional
+    public void delete(int id) {
+        Product product = entityManager.find(Product.class, id);
+        entityManager.remove(product);
     }
 
     @Override
-    public boolean update(Product product) {
-        Transaction transaction = null;
-
-        try (Session session = ConnectionUtil.sessionFactory.openSession()) {
-
-            transaction = session.beginTransaction();
-
-            Product findProduct = session.find(Product.class, product.getId());
-
-            if (findProduct == null) {
-                return false;
-            }
-
+    @Transactional
+    public void update(Product product) {
+        Product findProduct = entityManager.find(Product.class, product.getId());
+        if (findProduct != null) {
             findProduct.setName(product.getName());
             findProduct.setPrice(product.getPrice());
             findProduct.setQuantity(product.getQuantity());
             findProduct.setDescription(product.getDescription());
-
-            // Không cần merge vì entity đã managed
-            // session.merge(findProduct);
-
-            transaction.commit();
-            return true;
-
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
         }
-
-        return false;
     }
 }

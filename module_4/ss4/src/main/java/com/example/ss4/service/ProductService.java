@@ -1,21 +1,24 @@
 package com.example.ss4.service;
 
 import com.example.ss4.entity.Product;
-import com.example.ss4.repository.ProductRepository;
+import com.example.ss4.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProductService implements IProductService{
     @Autowired
-    private ProductRepository productRepository;
-    private List<Product> products;
+    private IProductRepository productRepository;
+
     @Override
     public boolean save(Product product) {
-        return productRepository.save(product);
+        if (product != null){
+            productRepository.save(product);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -30,11 +33,21 @@ public class ProductService implements IProductService{
 
     @Override
     public boolean delete(int id) {
-        return productRepository.delete(id);
+        Product product = productRepository.findById(id);
+        if (product != null){
+            productRepository.delete(id);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean update(Product product) {
-        return productRepository.update(product);
+        Product findProduct = productRepository.findById(product.getId());
+        if (findProduct != null){
+            productRepository.update(product);
+            return true;
+        }
+        return false;
     }
 }
