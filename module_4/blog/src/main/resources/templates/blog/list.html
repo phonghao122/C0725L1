@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Blog List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <h1 class="mb-4 text-center">
+        <a th:href="@{/blog/home}" class="text-decoration-none text-dark">📚 My Blog</a>
+    </h1>
+
+
+    <form th:action="@{/blog/home}" method="get" class="row g-2 mb-3">
+
+        <div class="col-md-4">
+            <input type="text"
+                   name="keyword"
+                   class="form-control"
+                   placeholder="Search title..."
+                   th:value="${keyword}">
+        </div>
+
+
+        <div class="col-md-3">
+            <select name="categoryId" class="form-control">
+                <option value="">-- All Category --</option>
+                <option th:each="c : ${categories}"
+                        th:value="${c.id}"
+                        th:text="${c.name}"
+                        th:selected="${c.id == categoryId}">
+                </option>
+            </select>
+        </div>
+
+
+        <div class="col-md-3">
+            <select name="sort" class="form-control">
+                <option value="">-- Sort By --</option>
+                <option value="title_asc" th:selected="${sort == 'title_asc'}">Title A → Z</option>
+                <option value="title_desc" th:selected="${sort == 'title_desc'}">Title Z → A</option>
+                <option value="category_asc" th:selected="${sort == 'category_asc'}">Category A → Z</option>
+                <option value="category_desc" th:selected="${sort == 'category_desc'}">Category Z → A</option>
+            </select>
+        </div>
+
+
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">🔍 Search</button>
+        </div>
+
+    </form>
+
+    <div class="d-flex gap-2 mb-3">
+        <a th:href="@{/blog/add}" class="btn btn-success">➕ Create Blog</a>
+        <a th:href="@{/category}" class="btn btn-warning">➕ Category</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3" th:each="blog : ${blogs}">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+
+
+                    <h5 class="card-title" th:text="${blog.title}"></h5>
+
+
+                    <p class="text-muted"
+                       th:text="${blog.content != null ? #strings.abbreviate(blog.content, 100) : ''}">
+                    </p>
+
+
+                    <span class="badge bg-info mb-2"
+                          th:text="${blog.category != null ? blog.category.name : 'No Category'}">
+                    </span>
+
+
+                    <div class="mt-auto">
+                        <a th:href="@{/blog/detail/{id}(id=${blog.id})}" class="btn btn-primary btn-sm">View</a>
+                        <a th:href="@{/blog/edit/{id}(id=${blog.id})}" class="btn btn-warning btn-sm">Edit</a>
+                        <a th:href="@{/blog/delete/{id}(id=${blog.id})}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Delete?')">Delete</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <nav th:if="${blogs.getTotalPages() > 1}">
+        <ul class="pagination justify-content-center">
+
+
+            <li class="page-item" th:classappend="${blogs.getNumber() == 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/blog/home(page=${blogs.getNumber() - 1}, keyword=${keyword}, categoryId=${categoryId}, sort=${sort})}">
+                    Previous
+                </a>
+            </li>
+
+
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0, blogs.getTotalPages() - 1)}"
+                th:classappend="${i == blogs.getNumber()} ? 'active'">
+                <a class="page-link"
+                   th:text="${i + 1}"
+                   th:href="@{/blog/home(page=${i}, keyword=${keyword}, categoryId=${categoryId}, sort=${sort})}">
+                </a>
+            </li>
+
+
+            <li class="page-item"
+                th:classappend="${blogs.getNumber() == blogs.getTotalPages() - 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/blog/home(page=${blogs.getNumber() + 1}, keyword=${keyword}, categoryId=${categoryId}, sort=${sort})}">
+                    Next
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+</div>
+
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
+
+    <div th:if="${message}"
+         id="liveToast"
+         class="toast align-items-center text-white border-0"
+         th:classappend="' bg-' + (${type} != null ? ${type} : 'success')"
+         role="alert">
+
+        <div class="d-flex">
+            <div class="toast-body">
+                <span th:text="${message}"></span>
+            </div>
+            <button type="button"
+                    class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast"></button>
+        </div>
+
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastEl = document.getElementById('liveToast');
+        if (toastEl) {
+            const toast = new bootstrap.Toast(toastEl, {
+                delay: 3000
+            });
+            toast.show();
+        }
+    });
+</script>
+</body>
+</html>
