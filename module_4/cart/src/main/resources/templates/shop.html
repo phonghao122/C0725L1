@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f4f6f9;
+        }
+
+        .container-box {
+            margin-top: 40px;
+        }
+
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .btn-custom {
+            border-radius: 20px;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container container-box">
+
+    <!-- HEADER -->
+    <div class="header-bar mb-4">
+        <h2 class="fw-bold text-primary">🛒 Product List</h2>
+        <a href="/shopping-cart" class="btn btn-outline-primary btn-custom position-relative">
+            🛍️ Cart
+
+            <!-- Badge số lượng -->
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                  th:text="${cart != null ? cart.countItemQuantity() : 0}">
+    </span>
+        </a>
+    </div>
+
+    <!-- TABLE -->
+    <div class="card shadow">
+        <div class="card-body">
+
+            <table class="table table-hover text-center align-middle">
+                <thead class="table-primary">
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td class="fw-semibold" th:text="${product.name}"></td>
+
+                    <td class="text-danger fw-bold"
+                        th:text="${#numbers.formatDecimal(product.price, 0, 0)} + ' đ'">
+                    </td>
+
+                    <td>
+                        <a class="btn btn-success btn-sm btn-custom"
+                           th:href="@{/add/__${product.id}__(action='list')}">
+                            ➕ Add
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast"
+         class="toast align-items-center text-white bg-success border-0"
+         role="alert">
+        <div class="d-flex">
+            <div class="toast-body" th:text="${message}"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- AUTO SHOW TOAST -->
+<script>
+    const message = "[[${message}]]";
+    const type = "[[${type}]]";
+
+    if (message && message !== "null") {
+        const toastEl = document.getElementById('liveToast');
+
+        // đổi màu theo type
+        if (type === "danger") {
+            toastEl.classList.remove("bg-success");
+            toastEl.classList.add("bg-danger");
+        }
+
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    }
+</script>
+
+</body>
+</html>
